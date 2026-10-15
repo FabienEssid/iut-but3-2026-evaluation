@@ -1,12 +1,22 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, redirect, RouterProvider } from "react-router";
+import { MovieList } from "./pages/MovieList.tsx";
+import { MovieDetails } from "./pages/MovieDetails.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    loader: () => {
+      throw redirect("/movies");
+    },
+  },
+  {
+    path: "/movies",
+    children: [
+      { index: true, element: <MovieList /> },
+      { path: ":id", element: <MovieDetails /> },
+    ],
   },
 ]);
 
